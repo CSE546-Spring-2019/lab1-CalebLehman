@@ -4,6 +4,10 @@
 
 #define MAX_CHUNK 100
 
+int byteCompare(char b1, char b2) {
+    return (b1 & 0xff) == (b2 & 0xff);
+}
+
 /***************************************************************************
 * Given two character arrays and their lengths, computes the length of the *
 * longest prefix common to both strings.                                   *
@@ -45,17 +49,23 @@ int main(int argc, char *argv[]) {
     const char* search_string   = argv[2];
     const char* output_filename = argv[3];
 
+    // Check that search string has non-zero length
+    if (strlen(search_string) == 0) {
+        printf("Cannot search for 0-length string.\nExiting...\n");
+        exit(1);
+    }
+
     // Open files
     FILE* in_file   = fopen(input_filename, "rb");
     FILE* out_file  = fopen(output_filename, "w");
 
     // Check that files are open
     if (in_file == NULL) {
-        printf("Could not open input file: %s\nExiting...", input_filename);
+        printf("Could not open input file: %s\nExiting...\n", input_filename);
         exit(1);
     }
     if (out_file == NULL) {
-        printf("Could not open output file: %s\nExiting...", output_filename);
+        printf("Could not open output file: %s\nExiting...\n", output_filename);
         exit(1);
     }
 
@@ -83,7 +93,7 @@ size_t lengthOfCommonPrefix(const char* str_1, size_t length_1, const char* str_
     size_t length = 0;
 
     // Iterate over strings until mismatch or end of a string
-    while ((length < length_1) && (length < length_2) && (str_1[length] == str_2[length])) {
+    while ((length < length_1) && (length < length_2) && byteCompare(str_1[length], str_2[length])) {
         length++;
     }
 
@@ -161,7 +171,7 @@ size_t countKnuthMorrisPratt(FILE* file, long int file_length, const char* strin
                 // Have matched a copy of search string
                 count++;
                 str_pos = table[str_pos - 1];
-            } else if ((offset < new_bytes) && (string[str_pos] != buffer[offset])) {
+            } else if ((offset < new_bytes) && (!byteCompare(string[str_pos], buffer[offset]))) {
                 // Have reached a mismatch
                 if (str_pos != 0) {
                     str_pos = table[str_pos - 1];
@@ -195,14 +205,14 @@ void fillLPSTable(const char* string, size_t table[], size_t length) {
         // These can be decomposed into a proper prefix-suffix
         //   of string[0..curr_pos-1] that can be extended by a match
         size_t prev_lps = table[curr_pos - 1];
-        while ((prev_lps > 0) && (string[curr_pos] != string[prev_lps])) {
+        while ((prev_lps > 0) && (!byteCompare(string[curr_pos], string[prev_lps]))) {
             prev_lps = table[prev_lps - 1];
         }
 
         // At this point, either
         //   string[curr_pos] == string[prev_lps] ->                    (lps at curr_pos extends prev_lps by 1)
         //   string[curr_pos] != string[prev_lps] && prev_lps == 0 ->   (lps at curr_pos is 0)
-        if (string[curr_pos] == string[prev_lps]) {
+        if (byteCompare(string[curr_pos], string[prev_lps])) {
             table[curr_pos] = prev_lps + 1;
         } else {
             table[curr_pos] = 0;
