@@ -12,7 +12,7 @@ size_t lengthOfCommonPrefix(const char* str_1, size_t length_1, const char* str_
 
 /***************************************************************************
 * Given a valid file pointer, the length of the file, and a string,        *
-* returns a count of the number of occurrances of the string in the file.  *
+* returns a count of the number of occurrences of the string in the file.  *
 * Counts using a sliding window approach, checking each position in the    *
 * file as a possible start to a copy of the search string                  *
 ***************************************************************************/
@@ -20,7 +20,7 @@ size_t countSlidingWindow(FILE* file, long int file_length, const char* string);
 
 /***************************************************************************
 * Given a valid file pointer, the length of the file, and a string,        *
-* returns a count of the number of occurrances of the string in the file.  *
+* returns a count of the number of occurrences of the string in the file.  *
 * Counts using an adaptation of the Knuth-Morris-Pratt algorithm described *
 * at https://en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm.           *
 ***************************************************************************/
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     printf("Size of file is %ld\n", file_length);
     fprintf(out_file, "Size of file is %ld\n", file_length);
 
-    // Count occurrances of string
+    // Count occurrences of string
     // size_t count = countSlidingWindow(in_file, file_length, search_string);
     size_t count = countKnuthMorrisPratt(in_file, file_length, search_string);
     printf("Number of matches = %ld\n", count);
