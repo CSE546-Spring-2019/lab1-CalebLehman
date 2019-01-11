@@ -41,22 +41,19 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    // Count bytes in file
-    fseek(in_file, 0, SEEK_END);
-    long int file_length = ftell(in_file);
-    fseek(in_file, 0, SEEK_SET);
-    printf("Size of file is %ld\n", file_length);
-    fprintf(out_file, "Size of file is %ld\n", file_length);
 
-    // Count occurrences of string
-    size_t count;
+    Counts counts;
 #ifdef NAIVE
-    count = countSlidingWindow(in_file, file_length, search_string);
+    counts = countNaive(in_file, search_string);
 #else
-    count = countKnuthMorrisPratt(in_file, file_length, search_string);
-#endif // NAIVE
-    printf("Number of matches = %ld\n", count);
-    fprintf(out_file, "Number of matches = %ld\n", count);
+    counts = countKnuthMorrisPratt(in_file, search_string);
+#endif
+
+    printf("Size of file is %ld\n", counts.count_bytes);
+    fprintf(out_file, "Size of file is %ld\n", counts.count_bytes);
+
+    printf("Number of matches = %ld\n", counts.count_matches);
+    fprintf(out_file, "Number of matches = %ld\n", counts.count_matches);
 
     // Close files
     fclose(in_file);

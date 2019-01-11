@@ -4,10 +4,10 @@
 //#define MAX_CHUNK 100
 extern const size_t MAX_CHUNK;
 
-typedef struct FileStats {
-    size_t length;
-    size_t matches;
-} FileStats;
+typedef struct Counts {
+    size_t count_bytes;
+    size_t count_matches;
+} Counts;
 
 // static int byteCompare(char b1, char b2) { return (b1 & 0xff) == (b2 & 0xff); }
 

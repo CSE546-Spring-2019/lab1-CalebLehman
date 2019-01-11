@@ -3,13 +3,17 @@
 
 #include <stdio.h>
 
+#include "defs.h"
+
 /***************************************************************************
-* Given a valid file pointer, the length of the file, and a string,        *
-* returns a count of the number of occurrences of the string in the file.  *
-* Counts using an implementation of the Knuth-Morris-Pratt algorithm       *
-* described in Introduction to Algorithms by CLRS                          *
+* Given a valid file pointer and a string,                                 *
+* returns the appropriate counts, namely                                   *
+*   the count of bytes in the file,                                        *
+*   the count of occurrences of the string in the file                     *
+* Counts occurrences using an implementation of the Knuth-Morris-Pratt     *
+* as described in Introduction to Algorithms by CLRS                       *
 ***************************************************************************/
-size_t countKnuthMorrisPratt(FILE* file, long int file_length, const char* string);
+Counts countKnuthMorrisPratt(FILE* file, const char* string);
 /***************************************************************************
 * Given a string and table of the same length.                             *
 * fills the table so that table[i] is the longest proper prefix of         *

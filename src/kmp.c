@@ -4,22 +4,24 @@
 #include "defs.h"
 #include "kmp.h"
 
-size_t countKnuthMorrisPratt(FILE* file, long int file_length, const char* string) {
-    size_t str_length = strlen(string);
+Counts countKnuthMorrisPratt(FILE* file, const char* string) {
+    Counts counts;
 
     // Generate longest-prefix-suffix table
+    size_t str_length = strlen(string);
     size_t* table = malloc(str_length * sizeof(*table));
     fillLPSTable(string, table, str_length);
 
-    size_t count = 0;
+    counts.count_matches = 0;
 
     char buffer[MAX_CHUNK]; // A buffer to store bytes read from file
-    size_t bytes_read = 0;  // Total number of bytes read from file
+    counts.count_bytes = 0; // Tracks total number of bytes read from file
     size_t str_pos = 0;     // Current position in search string
                             //   (previous positions have been matched)
 
     // Loop over file, reading into buffer
-    while (bytes_read < file_length) {
+    int finished_reading = 0;
+    while (!finished_reading) {
         size_t new_bytes = fread(buffer, sizeof(char), MAX_CHUNK, file);
 
         size_t offset = 0;  // Offset within buffer
@@ -40,7 +42,7 @@ size_t countKnuthMorrisPratt(FILE* file, long int file_length, const char* strin
             //   have reached end of buffer
             if (str_pos == str_length) {
                 // Have matched a copy of search string
-                count++;
+                counts.count_matches++;
                 str_pos = table[str_pos - 1];
             } else if (offset < new_bytes) {
                 // Have reached a mismatch
@@ -55,11 +57,13 @@ size_t countKnuthMorrisPratt(FILE* file, long int file_length, const char* strin
             } */
         }
 
-        bytes_read += new_bytes;
+        counts.count_bytes+= new_bytes;
+        finished_reading = feof(file);
     }
 
     free(table);
-    return count;
+
+    return counts;
 }
 
 void fillLPSTable(const char* string, size_t table[], size_t length) {
