@@ -14,6 +14,7 @@
 * as described in Introduction to Algorithms by CLRS                       *
 ***************************************************************************/
 Counts countKnuthMorrisPratt(FILE* file, const char* string);
+
 /***************************************************************************
 * Given a string and table of the same length.                             *
 * fills the table so that table[i] is the longest proper prefix of         *

@@ -31,11 +31,6 @@ Counts countNaive(FILE* file, const char* string) {
             if (memcmp(string, buffer + offset, str_length) == 0) {
                 counts.count_matches++;
             }
-            /*
-            if (lengthOfCommonPrefix(string, str_length, buffer + offset, buffer_size - offset) == str_length) {
-                count++;
-            }
-            */
         }
 
         // Shift processed bytes out of buffer, keeping last str_length + 1

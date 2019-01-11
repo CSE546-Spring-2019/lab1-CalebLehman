@@ -7,6 +7,7 @@
 #include "naive.h"
 
 const size_t MAX_CHUNK = 100;
+const size_t MAX_SEARCH = 20;
 
 int main(int argc, char *argv[]) {
     // Check that program was run with proper amount of arguments
@@ -21,9 +22,13 @@ int main(int argc, char *argv[]) {
     const char* search_string   = argv[2];
     const char* output_filename = argv[3];
 
-    // Check that search string has non-zero length
+    // Check that search string has valid length
+    size_t str_length = strlen(search_string);
     if (strlen(search_string) == 0) {
         printf("Cannot search for 0-length string.\nExiting...\n");
+        exit(1);
+    } else if (str_length > MAX_SEARCH) {
+        printf("Cannot search for a string of length > %ld.\nExiting...\n", MAX_SEARCH);
         exit(1);
     }
 
@@ -49,6 +54,7 @@ int main(int argc, char *argv[]) {
     counts = countKnuthMorrisPratt(in_file, search_string);
 #endif
 
+    // Print counts
     printf("Size of file is %ld\n", counts.count_bytes);
     fprintf(out_file, "Size of file is %ld\n", counts.count_bytes);
 
