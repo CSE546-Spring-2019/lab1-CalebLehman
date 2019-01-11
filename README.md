@@ -27,7 +27,7 @@ To build, run `make naive`. Resulting executable is `count` located in the `buil
 To run, use command `./build/count <in-file> <search-string> <out-file>`, where
 `<in-file>` is the input file to be counted/searched, `<search-string>` is the
 string to search for, and `<out-file>` is the file to which results should be
-printed.
+printed. The `<search-string>` must be 1 to 20 bytes long.
 
 ## Testing
 
