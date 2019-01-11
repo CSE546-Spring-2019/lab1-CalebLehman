@@ -1,1 +1,1 @@
-./count tests/examples/example2 potato temp
+$1/count $2/examples/example2 potato $3

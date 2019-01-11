@@ -1,1 +1,1 @@
-./count tests/examples/example2 tomato temp
+$1/count $2/examples/example2 tomato $3

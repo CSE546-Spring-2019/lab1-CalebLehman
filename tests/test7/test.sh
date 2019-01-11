@@ -1,1 +1,1 @@
-./count tests/examples/example3 "I want to" temp
+$1/count $2/examples/example3 "I want to" $3

@@ -1,1 +1,1 @@
-./count tests/examples/example1 the temp
+$1/count $2/examples/example1 the $3
