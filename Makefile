@@ -1,4 +1,4 @@
-# makefile for count.c
+# makefile for count program
 
 SRCDIR=src
 BUILDDIR=build

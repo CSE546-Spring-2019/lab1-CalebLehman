@@ -1,3 +1,7 @@
+/**
+ * Author: Caleb Lehman (lehman.346@osu.edu)
+ */
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -9,7 +13,7 @@ Counts countKnuthMorrisPratt(FILE* file, const char* string) {
 
     // Generate longest-prefix-suffix table
     size_t str_length = strlen(string);
-    size_t* table = malloc(str_length * sizeof(*table));
+    size_t table[MAX_SEARCH_STR_LEN];
     fillLPSTable(string, table, str_length);
 
     counts.count_matches = 0;
@@ -19,19 +23,16 @@ Counts countKnuthMorrisPratt(FILE* file, const char* string) {
     size_t str_pos = 0;     // Current position in search string
                             //   (previous positions have been matched)
 
-    // Loop over file, reading into buffer
     int finished_reading = 0;
     while (!finished_reading) {
-        size_t new_bytes = fread(buffer, sizeof(char), MAX_CHUNK, file);
+        size_t bytes_read = fread(buffer, sizeof(char), MAX_CHUNK, file);
 
         size_t offset = 0;  // Offset within buffer
-
-        // Loop over buffer, checking for matches
-        while (offset < new_bytes) {
-            // Match as far as possible
-            //   starting at str_pos in search string and
-            //   starting at offset in buffer
-            while ((str_pos < str_length) && (offset < new_bytes) && (string[str_pos] == buffer[offset])) {
+        while (offset < bytes_read) {
+            // Match as far as possible starting from
+            //   str_pos in search string and
+            //   offset in buffer
+            while ((str_pos < str_length) && (offset < bytes_read) && (string[str_pos] == buffer[offset])) {
                 offset++;
                 str_pos++;
             }
@@ -41,34 +42,29 @@ Counts countKnuthMorrisPratt(FILE* file, const char* string) {
             //   have reached a mismatch, or
             //   have reached end of buffer
             if (str_pos == str_length) {
-                // Have matched a copy of search string
                 counts.count_matches++;
                 str_pos = table[str_pos - 1];
-            } else if (offset < new_bytes) {
-                // Have reached a mismatch
-                if (str_pos != 0) {
-                    str_pos = table[str_pos - 1];
-                } else {
+            } else if (offset < bytes_read) {
+                if (str_pos == 0) {
+                    // Failed to match any characters, move offset
                     offset++;
+                } else {
+                    // Matched some characters, set to longest prefix/suffix
+                    str_pos = table[str_pos - 1];
                 }
-            } /* else {
-                // Have reached end of buffer
-                //   Do nothing, allow new buffer to be read in from file
-            } */
+            }
         }
 
-        counts.count_bytes+= new_bytes;
+        counts.count_bytes+= bytes_read;
         finished_reading = feof(file);
     }
-
-    free(table);
 
     return counts;
 }
 
-void fillLPSTable(const char* string, size_t table[], size_t length) {
-    // An implementation of the Knuth-Morris-Pratt algorithm as
-    // described in Introduction to Algorithms by CLRS.
+void fillLPSTable(const char* string, size_t* table, size_t length) {
+    // An implementation of the prefix table in the Knuth-Morris-Pratt
+    // algorithm as described in Introduction to Algorithms by CLRS.
 
     table[0] = 0;   // Single character has no proper prefix
 
@@ -85,8 +81,8 @@ void fillLPSTable(const char* string, size_t table[], size_t length) {
         }
 
         // At this point, either
-        //   string[curr_pos] == string[prev_lps] ->                    (lps at curr_pos extends prev_lps by 1)
-        //   string[curr_pos] != string[prev_lps] && prev_lps == 0 ->   (lps at curr_pos is 0)
+        //   string[curr_pos] == string[prev_lps]                   -> (lps at curr_pos extends prev_lps by 1)
+        //   string[curr_pos] != string[prev_lps] && prev_lps == 0  -> (lps at curr_pos is 0)
         if (string[curr_pos] == string[prev_lps]) {
             table[curr_pos] = prev_lps + 1;
         } else {

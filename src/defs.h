@@ -1,11 +1,16 @@
+/**
+ * Author: Caleb Lehman (lehman.346@osu.edu)
+ */
+
 #ifndef DEFS_H
 #define DEFS_H
 
-extern const size_t MAX_CHUNK;
+extern const size_t MAX_CHUNK;          // The size of largest chunk that should be read from file
+extern const size_t MAX_SEARCH_STR_LEN; // The maximum allowed size for a search string
 
 typedef struct Counts {
-    size_t count_bytes;
-    size_t count_matches;
+    size_t count_bytes;     // Stores the number of bytes in file
+    size_t count_matches;   // Stores the number of matches (to a string) in file
 } Counts;
 
 #endif // DEFS_H

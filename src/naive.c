@@ -1,3 +1,7 @@
+/**
+ * Author: Caleb Lehman (lehman.346@osu.edu)
+ */
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -15,7 +19,6 @@ Counts countNaive(FILE* file, const char* string) {
     counts.count_bytes = 0;         // Tracks the number of positions in file that have been checked as
                                     //   potential starting position for match
 
-    // Loop over file, reading into buffer
     int finished_reading = 0;
     while (!finished_reading) {
         size_t bytes_read;  // Number of bytes read from file this iteration
@@ -33,7 +36,7 @@ Counts countNaive(FILE* file, const char* string) {
             }
         }
 
-        // Shift processed bytes out of buffer, keeping last str_length + 1
+        // Shift processed bytes out of buffer, keeping (last str_length - 1)
         shift = MAX_CHUNK - str_length + 1;
         counts.count_bytes += bytes_read;
         finished_reading = feof(file);
