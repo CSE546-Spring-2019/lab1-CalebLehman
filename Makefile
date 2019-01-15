@@ -4,7 +4,7 @@ SRCDIR=src
 BUILDDIR=build
 
 CC=gcc
-CFLAGS=-g -Wall
+CFLAGS=-std=c99 -g -Wall
 
 DEPS=$(SRCDIR)/defs.h $(SRCDIR)/kmp.h $(SRCDIR)/naive.h
 OBJS=$(BUILDDIR)/count.o $(BUILDDIR)/kmp.o $(BUILDDIR)/naive.o
