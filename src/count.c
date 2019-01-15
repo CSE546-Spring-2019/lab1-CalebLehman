@@ -57,11 +57,11 @@ int main(int argc, char *argv[]) {
 #endif
 
     // Print counts to stdout and output file
-    printf("Size of file is %ld\n", counts.count_bytes);
-    fprintf(out_file, "Size of file is %ld\n", counts.count_bytes);
+    printf("Size of file is %llu\n", counts.count_bytes);
+    fprintf(out_file, "Size of file is %llu\n", counts.count_bytes);
 
-    printf("Number of matches = %ld\n", counts.count_matches);
-    fprintf(out_file, "Number of matches = %ld\n", counts.count_matches);
+    printf("Number of matches = %llu\n", counts.count_matches);
+    fprintf(out_file, "Number of matches = %llu\n", counts.count_matches);
 
     // Close files
     fclose(in_file);

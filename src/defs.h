@@ -9,8 +9,8 @@ extern const size_t MAX_CHUNK;          // The size of largest chunk that should
 extern const size_t MAX_SEARCH_STR_LEN; // The maximum allowed size for a search string
 
 typedef struct Counts {
-    size_t count_bytes;     // Stores the number of bytes in file
-    size_t count_matches;   // Stores the number of matches (to a string) in file
+    long long unsigned count_bytes;     // Stores the number of bytes in file
+    long long unsigned count_matches;   // Stores the number of matches (to a string) in file
 } Counts;
 
 #endif // DEFS_H
